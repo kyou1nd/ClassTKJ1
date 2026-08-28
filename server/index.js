@@ -184,13 +184,16 @@ app.delete('/api/data/:key', auth, async (req,res) => {
 app.use(express.static(new URL('../', import.meta.url).pathname));
 
 async function start() {
-  try {
-    await initDb();
-    console.log('Database initialized successfully.');
-  } catch (err) {
-    console.error('Database initialization failed:', err);
-    process.exit(1);
-  }
-  app.listen(PORT, '0.0.0.0', () => console.log(`WebClass API running on :${PORT}`));
+  app.listen(PORT, '0.0.0.0', async () => {
+    console.log(`WebClass API running on :${PORT}`);
+
+    try {
+      await initDb();
+      console.log('Database initialized successfully.');
+    } catch (err) {
+      console.error('Database initialization failed:', err);
+    }
+  });
 }
+
 start();
